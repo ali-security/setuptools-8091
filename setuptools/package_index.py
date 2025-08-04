@@ -831,6 +831,10 @@ class PackageIndex(Environment):
             name = name[:-4]  # strip the extra .zip before download
 
         filename = os.path.join(tmpdir, name)
+        
+        # ensure path resolves within the tmpdir
+        if not filename.startswith(str(tmpdir)):
+            raise ValueError(f"Invalid filename {filename}")
 
         return self._download_vcs(url, filename) or self._download_other(url, filename)
 
